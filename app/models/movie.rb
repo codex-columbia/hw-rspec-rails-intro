@@ -46,7 +46,14 @@ class Movie < ActiveRecord::Base
 
     data = JSON.parse(response.body)
     results = data.fetch('results', [])
-
+    Rails.logger.info(
+  "TMDB_DEBUG title=#{options[:title].inspect} " \
+  "year=#{options[:release_year].inspect} " \
+  "language=#{options[:language].inspect} " \
+  "returned=#{results.length} " \
+  "total_results=#{data['total_results']} " \
+  "total_pages=#{data['total_pages']}"
+    )
     results.map do |result|
       release_date = nil
 
