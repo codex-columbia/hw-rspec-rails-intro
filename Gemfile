@@ -6,7 +6,7 @@ gem 'ffi', '1.14.2'
 gem 'faraday', '1.8.0'
 gem 'sass-rails', '~> 5.0.3'
 gem 'uglifier', '>= 2.7.1'
-
+gem 'json', '2.21.2'
 gem 'jquery-rails'
 gem 'bigdecimal', '1.3.5'
 gem 'web-console', '~> 4'
