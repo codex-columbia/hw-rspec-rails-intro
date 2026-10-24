@@ -45,6 +45,50 @@ class MoviesController < ApplicationController
     redirect_to movies_path
   end
 
+  # Search for movies in TMDb
+  def search_tmdb
+    # Display the search form if no search has been submitted
+    return unless params.key?(:title)
+
+    # Make sure the required title field is not empty
+    if params[:title].blank?
+      flash.now[:danger] = 'Please fill in all required fields!'
+      return
+    end
+
+    # Collect search parameters
+    options = {
+      title: params[:title].strip,
+      release_year: params[:release_year],
+      language: params[:language]
+    }
+
+    # Search TMDb using the Movie model
+    @movies = Movie.find_in_tmdb(options)
+
+    # Display a message if no movies match the search
+    if @movies.empty?
+      flash.now[:warning] = 'No movies found with given parameters!'
+    end
+
+  rescue Movie::TMDbError, Faraday::Error, JSON::ParserError
+    flash.now[:danger] = 'TMDb search failed. Please try again.'
+  end
+
+  # Add a movie from TMDb search results to the database
+  def add_movie
+    @movie = Movie.new(movie_params)
+
+    if @movie.save
+      flash[:success] = "#{@movie.title} was successfully added to RottenPotatoes."
+    else
+      flash[:danger] = 'Unable to add movie.'
+    end
+
+    # Return to the search page
+    redirect_to search_tmdb_path
+  end
+
   private
 
   def force_index_redirect
@@ -65,5 +109,15 @@ class MoviesController < ApplicationController
 
   def sort_by
     params[:sort_by] || session[:sort_by] || 'id'
+  end
+
+  # Permit the fields required to create or update a movie
+  def movie_params
+    params.require(:movie).permit(
+      :title,
+      :rating,
+      :release_date,
+      :description
+    )
   end
 end

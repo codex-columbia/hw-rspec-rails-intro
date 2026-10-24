@@ -7,7 +7,7 @@
 
 <div class="search-container">
 <%# Part 1 here %>
-<%= form_tag <%# fill in here #%> do %>
+<%= form_tag search_tmdb_path, method: :get, id: 'tmdb_form' do %>
     <label for="searchMovieName">Movie Name</label>
     <%= text_field_tag 'title', nil, class: "form-control", id: "movie_title_field", placeholder: "Manhunter", id: "movie_title_field"%> 
     <label for="searchReleaseDateField">Release Year</label>
@@ -26,3 +26,4 @@
   
 <% end %>
 </div>
+<%= link_to 'Back to movie list', movies_path, class: 'btn btn-primary' %>

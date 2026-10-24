@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 ruby '3.3.8'
 gem 'rails', '~>7.1.5'
 gem 'ffi', '1.14.2'
-
+gem 'faraday', '1.8.0'
 gem 'sass-rails', '~> 5.0.3'
 gem 'uglifier', '>= 2.7.1'
 
@@ -25,6 +25,11 @@ group :development, :test do
 end
 
 group :production do
-  gem 'pg', '~> 0.2'
-  gem 'rails_12factor'
+  gem 'pg', '~> 1.5'
+end
+
+group :test do
+  gem 'rails-controller-testing'
+  gem 'guard-rspec'
+  gem 'webmock'
 end
